@@ -89,13 +89,13 @@ document.getElementById('app').innerHTML = `
         <div class="status" id="setupStatus">Siap digunakan.</div>
       </div>
     </div><br>
-    <button class="btn primary" onclick="window.location.href='https://captain-z-01.github.io/Personal-website'">
+    <button class="btn primary" onclick="window.location.href='https://captain-z.pages.dev'">
   Kembali ke Beranda
 </button>
 <br>
 <footer>
       <div>
-        <strong onclick="window.location.href='https://captain-z-01.github.io/Personal-website'" >Captain Z</strong> - Group Roller
+        <strong onclick="window.location.href='https://captain-z.pages.dev'" >Captain Z</strong> - Group Roller
       </div>
       <div class="copyright">
         © <span id="year"></span> Captain_Z MD. All rights reserved.
