@@ -679,7 +679,7 @@
   if (remainder === 1) {
 
     status +=
-      ` ⚡ Ada 1 anggota tambahan ` +
+      `Ada 1 anggota tambahan ` +
       `yang bisa memilih kelompok.`;
 
   } else if (remainder > 1) {
