@@ -586,7 +586,7 @@
       const name = document.createElement('div');
       name.textContent =
         p.isExtra
-          ? `⚡ ${p.name} — Tambahan`
+          ? `⚡ ${p.name}`
           : p.name;
       row.append(num, name);
       if (p.isExtra) {
@@ -679,7 +679,7 @@
   if (remainder === 1) {
 
     status +=
-      `Ada 1 anggota tambahan ` +
+      ` Ada 1 anggota tambahan ` +
       `yang bisa memilih kelompok.`;
 
   } else if (remainder > 1) {
