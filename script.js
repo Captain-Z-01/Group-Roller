@@ -732,76 +732,48 @@ function getGroupData() {
     };
   });
 }
-function getResultText() {
+function copyGroupResult() {
+  const groups = getGroupData();
 
-  const resultElement = document.querySelector("#result");
-
-  if (!resultElement) {
-    return "";
-  }
-
-  return resultElement.innerText.trim();
-}
-
-async function copyResult() {
-  const text = getResultText();
-
-  if (!text) {
-    alert("Belum ada hasil pembagian kelompok.");
+  if (!groups.length) {
+    toast('Buat kelompok terlebih dahulu.');
     return;
   }
 
-  try {
-    await navigator.clipboard.writeText(text);
+  let text =
+    `${state.exportTitle}\n` +
+    `${'='.repeat(state.exportTitle.length)}\n\n`;
 
-    const button = document.querySelector("#copyResultBtn");
+  groups.forEach((group) => {
+    text +=
+      `${group.title}\n` +
+      `${'-'.repeat(30)}\n`;
 
-    if (button) {
-      const originalText = button.innerHTML;
+    group.names.forEach((name, i) => {
+      text += `${i + 1}. ${name}\n`;
+    });
 
-      button.innerHTML = "Berhasil Disalin ✅";
+    text += '\n';
+  });
 
-      setTimeout(() => {
-        button.innerHTML = originalText;
-      }, 1800);
-    }
-  } catch (error) {
-    const textarea = document.createElement("textarea");
+  const total = groups.reduce(
+    (sum, group) => sum + group.names.length,
+    0
+  );
 
-    textarea.value = text;
-    textarea.style.position = "fixed";
-    textarea.style.left = "-9999px";
+  text +=
+    '==============================\n' +
+    `Total Anggota   : ${total}\n` +
+    `Jumlah Kelompok : ${groups.length}\n`;
 
-    document.body.appendChild(textarea);
-
-    textarea.select();
-    textarea.setSelectionRange(0, textarea.value.length);
-
-    try {
-      document.execCommand("copy");
-
-      const button = document.querySelector("#copyResultBtn");
-
-      if (button) {
-        const originalText = button.innerHTML;
-
-        button.innerHTML = "Berhasil Disalin ✅";
-
-        setTimeout(() => {
-          button.innerHTML = originalText;
-        }, 1800);
-      }
-    } catch (err) {
-      alert("Gagal menyalin hasil.");
-    }
-
-    textarea.remove();
-  }
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      toast('Hasil berhasil disalin');
+    })
+    .catch(() => {
+      toast('Gagal menyalin hasil.');
+    });
 }
-
-document
-  .querySelector("#copyResultBtn")
-  ?.addEventListener("click", copyResult);
   
 function downloadTXT() {
 
@@ -1096,6 +1068,8 @@ async function downloadPNG() {
     });
   });
   
+  els.copyResult =
+  document.getElementById('copyResult');
   els.downloadPng =
   document.getElementById('downloadPng');
   els.downloadTxt =
@@ -1103,6 +1077,10 @@ async function downloadPNG() {
   els.downloadPdf =
   document.getElementById('downloadPdf');
 
+  els.copyResult.addEventListener(
+  'click',
+  copyGroupResult
+  );
   els.downloadPng.addEventListener(
   'click',
   downloadPNG
