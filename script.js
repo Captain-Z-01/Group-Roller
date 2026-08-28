@@ -732,7 +732,8 @@ function getGroupData() {
     };
   });
 }
-function copyGroupResult() {
+
+async function copyGroupResult() {
   const groups = getGroupData();
 
   if (!groups.length) {
@@ -766,13 +767,67 @@ function copyGroupResult() {
     `Total Anggota   : ${total}\n` +
     `Jumlah Kelompok : ${groups.length}\n`;
 
-  navigator.clipboard.writeText(text)
-    .then(() => {
-      toast('Hasil berhasil disalin');
-    })
-    .catch(() => {
+  if (
+    navigator.clipboard &&
+    window.isSecureContext
+  ) {
+    try {
+      await navigator.clipboard.writeText(text);
+
+      toast('Hasil berhasil disalin ');
+      return;
+
+    } catch (error) {
+      console.warn(
+        'Clipboard API gagal, menggunakan fallback.',
+        error
+      );
+    }
+  }
+
+  const textarea =
+    document.createElement('textarea');
+
+  textarea.value = text;
+
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  textarea.style.pointerEvents = 'none';
+
+  document.body.appendChild(textarea);
+
+  textarea.focus();
+  textarea.select();
+  textarea.setSelectionRange(
+    0,
+    textarea.value.length
+  );
+
+  try {
+    const success =
+      document.execCommand('copy');
+
+    if (success) {
+      toast('Hasil berhasil disalin ');
+    } else {
       toast('Gagal menyalin hasil.');
-    });
+    }
+
+  } catch (error) {
+
+    console.error(
+      'Gagal menyalin:',
+      error
+    );
+
+    toast('Gagal menyalin hasil.');
+
+  } finally {
+
+    textarea.remove();
+
+  }
 }
   
 function downloadTXT() {
