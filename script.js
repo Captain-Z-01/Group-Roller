@@ -586,7 +586,7 @@
       const name = document.createElement('div');
       name.textContent =
         p.isExtra
-          ? `⚡ ${p.name}`
+          ? `🔹 ${p.name}`
           : p.name;
       row.append(num, name);
       if (p.isExtra) {
@@ -720,7 +720,7 @@ function getGroupData() {
 
       return nameElement
         ? nameElement.textContent
-            .replace('⚡ ', '')
+            .replace('🔹 ', '')
             .replace(' — Tambahan', '')
             .trim()
         : '';
@@ -732,6 +732,77 @@ function getGroupData() {
     };
   });
 }
+function getResultText() {
+
+  const resultElement = document.querySelector("#result");
+
+  if (!resultElement) {
+    return "";
+  }
+
+  return resultElement.innerText.trim();
+}
+
+async function copyResult() {
+  const text = getResultText();
+
+  if (!text) {
+    alert("Belum ada hasil pembagian kelompok.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+
+    const button = document.querySelector("#copyResultBtn");
+
+    if (button) {
+      const originalText = button.innerHTML;
+
+      button.innerHTML = "Berhasil Disalin ✅";
+
+      setTimeout(() => {
+        button.innerHTML = originalText;
+      }, 1800);
+    }
+  } catch (error) {
+    const textarea = document.createElement("textarea");
+
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+
+    document.body.appendChild(textarea);
+
+    textarea.select();
+    textarea.setSelectionRange(0, textarea.value.length);
+
+    try {
+      document.execCommand("copy");
+
+      const button = document.querySelector("#copyResultBtn");
+
+      if (button) {
+        const originalText = button.innerHTML;
+
+        button.innerHTML = "Berhasil Disalin ✅";
+
+        setTimeout(() => {
+          button.innerHTML = originalText;
+        }, 1800);
+      }
+    } catch (err) {
+      alert("Gagal menyalin hasil.");
+    }
+
+    textarea.remove();
+  }
+}
+
+document
+  .querySelector("#copyResultBtn")
+  ?.addEventListener("click", copyResult);
+  
 function downloadTXT() {
 
   const groups = getGroupData();
