@@ -192,7 +192,11 @@ document.getElementById('app').innerHTML = `
       <div class="groups-grid" id="groupsGrid" style="margin-top:14px"></div>     
     </div><br>
    <div class="export-buttons">
-
+   
+  <button id="copyResultBtn" type="button">
+  Copy Hasil
+ </button>
+ 
   <button class="btn secondary" id="downloadTxt">
     Unduh TXT
   </button>
