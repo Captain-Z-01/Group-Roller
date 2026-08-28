@@ -193,9 +193,9 @@ document.getElementById('app').innerHTML = `
     </div><br>
    <div class="export-buttons">
    
-  <button id="copyResultBtn" type="button">
-  Copy Hasil
- </button>
+  <button class="btn primary" id="copyResult">
+    Copy Hasil
+  </button>
  
   <button class="btn secondary" id="downloadTxt">
     Unduh TXT
